@@ -4,39 +4,35 @@ import { useAuth } from "@/context/authContext";
 import { useTheme } from "@/context/themeContext";
 import AppText from "@/components/AppText";
 import { useEffect, useState } from "react";
-import { getUserProjects } from "@/firebase/firebaseDatabase";
+import { listenToUserProjects } from "@/firebase/firebaseDatabase";
 import { isAuthError } from "@/utils/typeGuards";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import { ProjectsDataType } from "@/types/projectType";
 export default function ProfileScreen() {
 
     const router = useRouter();
 
-    const { logOutUser } = useAuth();
+    const { logOutUser, user} = useAuth();
 
     const { colors, toggleTheme, theme } = useTheme();
 
-    const { user } = useAuth();
+    
 
-    const [projects, setProjects] = useState<any[]>([]);
+    const [projects, setProjects] = useState<ProjectsDataType[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         if (!user) return;
 
-        const fetchProjects = async () => {
-            setLoading(true);
-            const result = await getUserProjects(user.uid);
-            if (isAuthError(result)) {
-                alert("Failed to fetch projects:" + result.errorMessage);
-                setProjects([]);
-            } else {
-                setProjects(result);
-            }
-            setLoading(false);
-        };
 
-        fetchProjects();
+        const unsub = listenToUserProjects(user.uid, (projects) => {
+            setProjects(projects);
+            setLoading(false);
+        });
+
+        return () => unsub();
+
     }, [user]);
 
     function openProjectDetails(id: string) {
@@ -103,18 +99,20 @@ export default function ProfileScreen() {
                 {loading && <AppText>Loading projects...</AppText>}
                 {!loading && projects.length === 0 && <AppText>No projects found.</AppText>}
                 <ScrollView style={{ borderColor: "transparent", borderTopColor: colors.primary.base, borderWidth: 2, }}>
-                    {projects.map(project => (
-                        <Pressable onPress={() => { openProjectDetails(project.id)}}>
-                            <View key={project.id} style={styles.projectCard}>
-                                <AppText style={styles.projectTitle}>{project.projectName}</AppText>
-                                <AppText>Project type: {project.projectType}</AppText>
-                                <AppText>Yarn type: {project.yarnType}</AppText>
-                                <AppText>Yards per ball: {project.yardsPerBall}</AppText>
-                                <AppText>Min: {project.min} balls</AppText>
-                                <AppText>Max: {project.max} balls</AppText>
-                            </View>
-                        </Pressable>
-                    ))}
+                    {
+                        projects.map(project => (
+                            <Pressable onPress={() => { openProjectDetails(project.id) }}  key={project.id}>
+                                <View style={styles.projectCard}>
+                                    <AppText style={styles.projectTitle}>{project.projectName}</AppText>
+                                    <AppText>Project type: {project.projectType}</AppText>
+                                    <AppText>Yarn type: {project.yarnType}</AppText>
+                                    <AppText>Yards per ball: {project.yardsPerBall}</AppText>
+                                    <AppText>Min: {project.min} balls</AppText>
+                                    <AppText>Max: {project.max} balls</AppText>
+                                </View>
+                            </Pressable>
+                        ))
+                    }
                 </ScrollView>
             </ThemedView>
         </View>

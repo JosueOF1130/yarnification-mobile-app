@@ -1,14 +1,26 @@
-import { View, type ViewProps } from 'react-native';
+import { useTheme } from "@/context/themeContext";
+import { PropsWithChildren } from "react";
+import { StyleSheet, View } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import { useThemeColor } from '@/hooks/useThemeColor';
+export default function ThemedView({ children }: PropsWithChildren) {
 
-export type ThemedViewProps = ViewProps & {
-  lightColor?: string;
-  darkColor?: string;
-};
+    const { colors } = useTheme();
 
-export function ThemedView({ style, lightColor, darkColor, ...otherProps }: ThemedViewProps) {
-  const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background');
+    const styles = StyleSheet.create({
+        container: {
+            flex: 1,
+            width: "100%",
+            backgroundColor: colors.background.base,
+            paddingHorizontal: 25,
+            paddingVertical: 50
+        }
+    })
 
-  return <View style={[{ backgroundColor }, style]} {...otherProps} />;
+    return (
+        <SafeAreaProvider style={styles.container}>
+            {children}
+        </SafeAreaProvider>
+    );
 }
+

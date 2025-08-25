@@ -1,7 +1,7 @@
 
 import { database } from "./firebase";
 
-import { ref, set, push, get, update, onValue, off } from "firebase/database";
+import { get, onValue, push, ref, set } from "firebase/database";
 
 import type { ProjectDataType, ProjectsDataType } from "@/types/projectType";
 

@@ -1,5 +1,5 @@
 import { FirebaseError } from "firebase/app";
-import { User, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile, reload} from "firebase/auth"
+import { User, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth } from "./firebase";
 
 import { database } from "@/firebase/firebase";
@@ -77,9 +77,7 @@ async function getUsername(uid: string): Promise<string | null | AuthError> {
 
 
 export {
-    onUserStateChange,
-    signUpUser,
-    signInUser,
-    signOutUser,
-    getUsername
-}
+    getUsername, onUserStateChange, signInUser,
+    signOutUser, signUpUser
+};
+

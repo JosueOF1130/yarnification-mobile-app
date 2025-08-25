@@ -1,6 +1,6 @@
 import AppText from "@/components/AppText";
 import { Pressable, ScrollView, StyleSheet, Switch, View } from "react-native";
-
+import { Ionicons } from '@expo/vector-icons';
 import { Stack, useLocalSearchParams } from "expo-router";
 import ThemedView from "@/components/ThemedView";
 import { useTheme } from "@/context/themeContext";
@@ -10,10 +10,10 @@ import { getProject } from "@/firebase/firebaseDatabase";
 import { useAuth } from "@/context/authContext";
 import AppInput from "@/components/AppInput";
 
+import { router } from "expo-router";
+
 
 export default function DetailsScreen() {
-
-    //use effect to get project name based on id
 
 
     const { id } = useLocalSearchParams<{ id: string }>();
@@ -25,8 +25,6 @@ export default function DetailsScreen() {
 
 
     useEffect(() => {
-        //get rpoject detials from firebase
-        //set the use states
         if (!user) return;
         const getData = async () => {
             const data = await getProject(user.uid, id);
@@ -78,10 +76,19 @@ export default function DetailsScreen() {
 
     return (
         <>
-                    <Stack.Screen options={{headerShown: false}} />
+            <Stack.Screen options={{headerShown: false}} />
 
             <ThemedView>
-                <AppText variant="display">Details</AppText>
+            
+			<View style={{ marginVertical: 14}} >
+			<Pressable style={{ flexDirection: "row", alignItems: "center"}} onPress={(() => router.back())}>
+                        <Ionicons name="arrow-back" size={24} color={colors.text.base} />
+                        <AppText style={{ marginLeft: 5 }}>Back</AppText>
+                    </Pressable>
+                </View>
+            <AppText variant="display">Details</AppText>
+
+                
                 <ScrollView contentContainerStyle={styles.container}>
                     {/* Editable Inputs */}
                     <View style={styles.row}>
@@ -90,6 +97,7 @@ export default function DetailsScreen() {
 
                             style={[styles.input, { color: colors.text.base, borderColor: colors.text.base }]}
                             value={project.projectName}
+                            placeHolder="Name your project"
                             onChangeText={text => setProject({ ...project, projectName: text })}
                         />
                     </View>
@@ -99,6 +107,7 @@ export default function DetailsScreen() {
                         <AppInput
                             style={[styles.input, { color: colors.text.base, borderColor: colors.text.base }]}
                             value={project.yarnBrand}
+                            placeHolder="Enter yarn brand"
                             onChangeText={text => setProject({ ...project, yarnBrand: text })}
                         />
                     </View>
@@ -108,6 +117,7 @@ export default function DetailsScreen() {
                         <AppInput
                             style={[styles.input, { color: colors.text.base, borderColor: colors.text.base }]}
                             value={project.yarnMaterial}
+                            placeHolder="Enter yarn material"
                             onChangeText={text => setProject({ ...project, yarnMaterial: text })}
                         />
                     </View>
@@ -178,7 +188,6 @@ export default function DetailsScreen() {
 
 const styles = StyleSheet.create({
     container: {
-        // padding: 20,
         marginTop: 20
     },
     row: {

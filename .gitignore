@@ -38,9 +38,5 @@ yarn-error.*
 
 app-example
 
-firebase
-
 .env
-
-firebase.json
 

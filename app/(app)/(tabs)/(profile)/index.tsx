@@ -1,26 +1,25 @@
+import AppText from "@/components/AppText";
 import ThemedView from "@/components/ThemedView";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useAuth } from "@/context/authContext";
 import { useTheme } from "@/context/themeContext";
-import AppText from "@/components/AppText";
-import { useEffect, useState } from "react";
 import { listenToUserProjects } from "@/firebase/firebaseDatabase";
-import { isAuthError } from "@/utils/typeGuards";
+import { ProjectsDataType } from "@/types/projectType";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { ProjectsDataType } from "@/types/projectType";
+import { useEffect, useState } from "react";
+import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 export default function ProfileScreen() {
 
     const router = useRouter();
 
-    const { logOutUser, user} = useAuth();
+    const { user } = useAuth();
 
-    const { colors, toggleTheme, theme } = useTheme();
-
+    const { colors } = useTheme();
     
 
     const [projects, setProjects] = useState<ProjectsDataType[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+
 
     useEffect(() => {
         if (!user) return;
@@ -41,8 +40,9 @@ export default function ProfileScreen() {
 
 
     const styles = StyleSheet.create({
-        heading: {
+        header: {
             justifyContent: "space-between",
+            alignItems: "center",
             flexDirection: "row"
         },
         button: {
@@ -69,33 +69,28 @@ export default function ProfileScreen() {
             marginBottom: 5,
         },
         iconButton: {
-            width: 20,
-
-            // backgroundColor: "red"
+            width: 25,
+            height: 25,
         },
     })
 
     return (
         <View style={{ flex: 1 }}>
             <ThemedView>
-                <View style={styles.heading}>
+                <View style={styles.header}>
                     <AppText variant="display" style={{}}>Profile</AppText>
 
-                    <Pressable style={styles.iconButton}>
-                        <Ionicons name="settings" size={24} color={colors.text.base} />
+                    <Pressable style={styles.iconButton} onPress={() => router.push("./settings")}>
+                        <Ionicons name="settings" size={25} color={colors.text.base} />
                     </Pressable>
                 </View>
 
-                <Pressable style={styles.button} onPress={logOutUser}>
-                    <Text style={styles.buttonText}>Sign out</Text>
-                </Pressable>
-                <Pressable style={styles.button} onPress={toggleTheme}>
-                    <Text style={styles.buttonText}>
-                        {theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
-                    </Text>
-                </Pressable>
+                
 
-                <AppText variant="title" style={{ marginTop: 20, marginBottom: 10 }}>My Projects</AppText>
+                <AppText variant="heading" style={{ marginTop: 20, marginBottom: 10 }}>My Projects</AppText>
+
+
+                
                 {loading && <AppText>Loading projects...</AppText>}
                 {!loading && projects.length === 0 && <AppText>No projects found.</AppText>}
                 <ScrollView style={{ borderColor: "transparent", borderTopColor: colors.primary.base, borderWidth: 2, }}>

@@ -1,14 +1,16 @@
+import AppInput from "@/components/AppInput";
 import AppText from "@/components/AppText";
-import { Pressable, ScrollView, StyleSheet, Switch, View } from "react-native";
+import ThemedView from "@/components/ThemedView";
+import { useAuth } from "@/context/authContext";
+import { useTheme } from "@/context/themeContext";
+import { getProject } from "@/firebase/firebaseDatabase";
+import { ProjectDataType } from "@/types/projectType";
 import { Ionicons } from '@expo/vector-icons';
 import { Stack, useLocalSearchParams } from "expo-router";
-import ThemedView from "@/components/ThemedView";
-import { useTheme } from "@/context/themeContext";
 import { useEffect, useState } from "react";
-import { ProjectDataType } from "@/types/projectType";
-import { getProject } from "@/firebase/firebaseDatabase";
-import { useAuth } from "@/context/authContext";
-import AppInput from "@/components/AppInput";
+import { Pressable, ScrollView, StyleSheet, Switch, View } from "react-native";
+
+const { colors } = useTheme();
 
 import { router } from "expo-router";
 
@@ -20,7 +22,6 @@ export default function DetailsScreen() {
     const { user } = useAuth();
     const [project, setProject] = useState<ProjectDataType>()
 
-    const { colors } = useTheme();
 
 
 
@@ -72,23 +73,30 @@ export default function DetailsScreen() {
         );
     }
 
-    console.log(project.public);
+
+    function goBack() {
+        router.back();
+    }
+
+    async function saveChanges() {
+
+    }
 
     return (
         <>
-            <Stack.Screen options={{headerShown: false}} />
+            <Stack.Screen options={{ headerShown: false }} />
 
             <ThemedView>
-            
-			<View style={{ marginVertical: 14}} >
-			<Pressable style={{ flexDirection: "row", alignItems: "center"}} onPress={(() => router.back())}>
+
+                <View style={{ marginVertical: 14 }} >
+                    <Pressable style={{ flexDirection: "row", alignItems: "center" }} onPress={goBack}>
                         <Ionicons name="arrow-back" size={24} color={colors.text.base} />
-                        <AppText style={{ marginLeft: 5 }}>Back</AppText>
+                        <AppText style={{ marginLeft: 5 }} variant="title">Profile</AppText>
                     </Pressable>
                 </View>
-            <AppText variant="display">Details</AppText>
+                <AppText variant="display">Details</AppText>
 
-                
+
                 <ScrollView contentContainerStyle={styles.container}>
                     {/* Editable Inputs */}
                     <View style={styles.row}>
@@ -97,7 +105,7 @@ export default function DetailsScreen() {
 
                             style={[styles.input, { color: colors.text.base, borderColor: colors.text.base }]}
                             value={project.projectName}
-                            placeHolder="Name your project"
+                            placeholder="Name your project"
                             onChangeText={text => setProject({ ...project, projectName: text })}
                         />
                     </View>
@@ -107,7 +115,8 @@ export default function DetailsScreen() {
                         <AppInput
                             style={[styles.input, { color: colors.text.base, borderColor: colors.text.base }]}
                             value={project.yarnBrand}
-                            placeHolder="Enter yarn brand"
+                            placeholder="Enter yarn brand"
+                            placeholderTextColor={colors.text.base}
                             onChangeText={text => setProject({ ...project, yarnBrand: text })}
                         />
                     </View>
@@ -117,7 +126,8 @@ export default function DetailsScreen() {
                         <AppInput
                             style={[styles.input, { color: colors.text.base, borderColor: colors.text.base }]}
                             value={project.yarnMaterial}
-                            placeHolder="Enter yarn material"
+                            placeholder="Enter yarn material"
+                            placeholderTextColor={colors.text.base}
                             onChangeText={text => setProject({ ...project, yarnMaterial: text })}
                         />
                     </View>
@@ -175,8 +185,11 @@ export default function DetailsScreen() {
                     </View>
 
                     {/* Save Button */}
-                    <Pressable onPress={() => { }} style={[styles.button, { backgroundColor: colors.primary.base }]}>
-                        <AppText style={{ color: colors.text.base, fontWeight: "bold" }}>Save</AppText>
+                    <Pressable onPress={saveChanges} style={styles.button}>
+                        <AppText style={styles.buttonTxt}>Save</AppText>
+                    </Pressable>
+                    <Pressable onPress={goBack} style={styles.button}>
+                        <AppText style={styles.buttonTxt}>Cancel</AppText>
                     </Pressable>
 
                 </ScrollView>
@@ -212,5 +225,11 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         borderRadius: 8,
         alignItems: "center",
+        backgroundColor: colors.primary.base,
     },
+    buttonTxt: {
+        color: colors.background.base,
+        fontWeight: "bold"
+    }
+
 });

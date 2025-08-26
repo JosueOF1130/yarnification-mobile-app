@@ -14,6 +14,7 @@ import { router } from "expo-router";
 import AppButton from "@/components/AppButton";
 import ToastMessage from "@/components/ToastMessage";
 import AppIconButton from "@/components/AppIconButton";
+import yarnRequirements from "@/assets/yarnRequirements";
 
 
 export default function DetailsScreen() {
@@ -26,6 +27,7 @@ export default function DetailsScreen() {
 
     const [toastVisible, setToastVisible] = useState<boolean>(false);
     const [toastErrorMessage, setToastErrorMessage] = useState<string>("");
+
 
 
     useEffect(() => {

@@ -6,11 +6,12 @@ import type { TextVariant } from "@/types/componentTypes";
 
 interface AppTextProps extends TextProps {
     variant?: TextVariant,
-    style?: StyleProp<TextStyle>
+    style?: StyleProp<TextStyle>,
+    bold?: boolean
 }
 
 
-export default function AppText({ variant = 'body', style, ...props }: AppTextProps) {
+export default function AppText({ variant = 'body', style, bold, ...props }: AppTextProps) {
     const { colors } = useTheme();
 
     const styles = StyleSheet.create({
@@ -38,13 +39,16 @@ export default function AppText({ variant = 'body', style, ...props }: AppTextPr
             fontSize: 32,
             fontWeight: "800",
         },
+        bold: {
+            fontWeight: "bold"
+        },
         default: {
             color: colors.text.base,
         }
     })
 
     return (
-        <Text style={[styles.default, styles[variant],style]} {...props} />
+        <Text style={[styles.default, styles[variant],style, bold && styles.bold]} {...props} />
     );
 }
 

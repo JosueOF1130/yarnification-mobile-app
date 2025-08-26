@@ -20,9 +20,14 @@ interface ModalProps {
     displayToast: (message: string) => void;
 }
 
+import type { ProjectDataType } from "@/types/projectType";
+
+
 export default function SaveProjectModal({ visible, hideModal, minMax, yarnTypeIndex, projectIndex, yardsPerBall, user, displayToast }: ModalProps) {
 
     const { colors } = useTheme();
+
+
 
     const styles = StyleSheet.create({
         overlay: {

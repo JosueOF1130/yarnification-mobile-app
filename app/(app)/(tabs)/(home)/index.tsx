@@ -19,6 +19,7 @@ import projectIcons from "@/assets/projectIcons";
 import yarnIcons from "@/assets/yarnIcons";
 import ToastMessage from "@/components/ToastMessage";
 import { useAuth } from "@/context/authContext";
+import AppButton from "@/components/AppButton";
 
 
 
@@ -27,61 +28,7 @@ export default function HomePage() {
     const { colors, theme } = useTheme();
     const { user } = useAuth();
 
-    const styles = StyleSheet.create({
-        background: {
-            backgroundColor: colors.background.base,
-            height: "120%"
-        },
-        greetings: {
-            marginVertical: 20
-        },
-        container: {
-            width: "100%",
-            textAlign: "left"
-        },
-        input: {
-            padding: 10,
-            height: 50,
-            color: colors.text.base,
-            marginTop: 15
-        },
-        border: {
-            borderWidth: 1,
-            borderColor: colors.text.base,
-            borderRadius: 5,
-        },
-        marginVM: {
-            marginVertical: 20
-        },
-        button: {
-            backgroundColor: colors.primary.shades[500],
-            padding: 15,
-            borderRadius: 8,
-            alignItems: 'center',
-            marginTop: 25,
-        },
-        buttonText: {
-            color: colors.text.base,
-            fontWeight: 'bold',
-            fontSize: 16,
-        },
-        image: {
-            width: 100,
-            height: 100
-        },
-        responseContainer: {
-
-        },
-        responseBody: {
-            marginTop: 20
-        },
-        col: {
-
-        },
-        minMaxLabel: {
-            textAlign: "center"
-        }
-    })
+    
 
 
 
@@ -152,8 +99,8 @@ export default function HomePage() {
         setProjectIcon(safeValue);
     }
 
-    function onSaveProject() {
-        console.log(selectedYarn, selectedProject);
+    function saveProject() {
+        
         setShowModal(true);
     }
 
@@ -165,9 +112,7 @@ export default function HomePage() {
                         <AppText>You'll need about this amount of balls of yarn</AppText>
                         <AppText style={styles.minMaxLabel}>{minMax.min}{" < Yards < "}{minMax.max}</AppText>
                     </View>
-                    <Pressable style={styles.button} onPress={onSaveProject}>
-                        <Text style={styles.buttonText}>Save project?</Text>
-                    </Pressable>
+                    <AppButton onPress={saveProject} buttonStyle={styles.button}>Save project?</AppButton>
                 </View>
             </View>
         );
@@ -190,17 +135,23 @@ export default function HomePage() {
     }
 
 
+    const cs = StyleSheet.create({
+        scrollView: {
+            backgroundColor: colors.background.base
+        }
+    })
+
     return (
         <>
 
         
-            <ScrollView style={styles.background}>
+            <ScrollView style={cs.scrollView}>
                 <ThemedView>
                     <AppText variant="display">Home</AppText>
 
                     <View style={styles.container}>
                         <AppText style={{ marginTop: 20 }}>Select yarn type:</AppText>
-                        <AppSelectList data={yarnTypeData} setSelected={changeYarnTypeIcon} />
+                        <AppSelectList data={yarnTypeData} setSelected={changeYarnTypeIcon}/>
                         <AppText style={{ marginTop: 20 }}>Select your project:</AppText>
                         <AppSelectList data={projectTypeData} setSelected={changeProjectIcon} />
                         <AppText>Minimum: {yarnRequirements[selectedYarn][selectedProject].min} yards</AppText>
@@ -215,9 +166,7 @@ export default function HomePage() {
                             returnKeyType="done"
                             keyboardAppearance={theme}
                         />
-                        <Pressable style={styles.button} onPress={calculateYarnAmount}>
-                            <Text style={styles.buttonText}>Calculate</Text>
-                        </Pressable>
+                        <AppButton onPress={calculateYarnAmount} buttonStyle={styles.button}>Calculate</AppButton>
                         {
                             calculated &&
                             Response()
@@ -242,6 +191,63 @@ export default function HomePage() {
             {
                 <ToastMessage visible={showSuccessToast} hideToast={() => setShowSuccessToast(false)} type="success" message={toastMessage}/>
             }
+            {/* on calculate toast error */}
         </>
     );
 }
+
+const styles = StyleSheet.create({
+        background: {
+            // backgroundColor: colors.background.base,
+            height: "120%"
+        },
+        greetings: {
+            marginVertical: 20
+        },
+        container: {
+            width: "100%",
+            textAlign: "left"
+        },
+        input: {
+            padding: 10,
+            height: 50,
+            // color: colors.text.base,
+            marginTop: 15
+        },
+        border: {
+            borderWidth: 1,
+            // borderColor: colors.text.base,
+            borderRadius: 5,
+        },
+        marginVM: {
+            marginVertical: 20
+        },
+        button: {
+            // backgroundColor: colors.primary.shades[500],
+            padding: 15,
+            borderRadius: 8,
+            alignItems: 'center',
+            marginTop: 25,
+        },
+        buttonText: {
+            // color: colors.text.base,
+            fontWeight: 'bold',
+            fontSize: 16,
+        },
+        image: {
+            width: 100,
+            height: 100
+        },
+        responseContainer: {
+
+        },
+        responseBody: {
+            marginTop: 20
+        },
+        col: {
+
+        },
+        minMaxLabel: {
+            textAlign: "center"
+        }
+    })

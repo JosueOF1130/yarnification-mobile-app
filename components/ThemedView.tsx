@@ -13,7 +13,7 @@ export default function ThemedView({ children }: PropsWithChildren) {
             width: "100%",
             backgroundColor: colors.background.base,
             paddingHorizontal: 25,
-            paddingVertical: 50
+            paddingTop: 50
         }
     })
 

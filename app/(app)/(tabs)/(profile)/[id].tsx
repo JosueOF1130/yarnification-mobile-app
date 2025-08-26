@@ -10,13 +10,14 @@ import { Stack, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Switch, View } from "react-native";
 
-const { colors } = useTheme();
-
 import { router } from "expo-router";
+import AppButton from "@/components/AppButton";
+import ToastMessage from "@/components/ToastMessage";
+import AppIconButton from "@/components/AppIconButton";
 
 
 export default function DetailsScreen() {
-
+    const { colors } = useTheme();  
 
     const { id } = useLocalSearchParams<{ id: string }>();
     const { user } = useAuth();
@@ -24,6 +25,7 @@ export default function DetailsScreen() {
 
 
     const [toastVisible, setToastVisible] = useState<boolean>(false);
+    const [toastErrorMessage, setToastErrorMessage] = useState<string>("");
 
 
     useEffect(() => {
@@ -98,7 +100,7 @@ export default function DetailsScreen() {
                 <AppText variant="display">Details</AppText>
 
 
-                <ScrollView contentContainerStyle={styles.container}>
+                <ScrollView contentContainerStyle={[styles.container]} style={ { flex: 1} } showsVerticalScrollIndicator={false} >
                     {/* Editable Inputs */}
                     <View style={styles.row}>
                         <AppText style={styles.label}>Project Name:</AppText>
@@ -186,19 +188,20 @@ export default function DetailsScreen() {
                     </View>
 
                     {/* Save Button */}
-                    <Pressable onPress={saveChanges} style={styles.button}>
-                        <AppText style={styles.buttonTxt}>Save</AppText>
-                    </Pressable>
-                    <Pressable onPress={goBack} style={styles.button}>
-                        <AppText style={styles.buttonTxt}>Cancel</AppText>
-                    </Pressable>
+                    <AppButton onPress={saveChanges} buttonStyle={styles.button}>Save changes</AppButton>
 
-                    {/* {
+                    {/* Cancel Button */}                    
+                    <AppButton onPress={goBack} buttonStyle={styles.button}>Cancel</AppButton>
+                    
+                    {/* Delete project button */}
+                    <AppIconButton onPress={() => {}} name="trash" buttonStyle={[{backgroundColor: "transparent", borderWidth: 1, borderColor: colors.text.base}, styles.button]} textStyle={{color: colors.text.base}} color={colors.text.base} size={15}>Delete Project</AppIconButton>
+
+                    {
                         toastVisible && (
-                            <ToastMessage visible={toastVisible} hideToast={() => setToastVisible(false)} type="success" message={errorMessage} />
+                            <ToastMessage visible={toastVisible} hideToast={() => setToastVisible(false)} type="success" message={toastErrorMessage} />
 
                         )
-                    } */}
+                    }
 
 
                 </ScrollView>
@@ -231,14 +234,6 @@ const styles = StyleSheet.create({
     },
     button: {
         marginTop: 20,
-        paddingVertical: 10,
-        borderRadius: 8,
-        alignItems: "center",
-        backgroundColor: colors.primary.base,
-    },
-    buttonTxt: {
-        color: colors.background.base,
-        fontWeight: "bold"
-    }
 
+    },
 });

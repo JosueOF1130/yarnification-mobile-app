@@ -2,7 +2,7 @@ import { StyleProp, StyleSheet, Text, TextProps, TextStyle } from "react-native"
 
 import { useTheme } from "@/context/themeContext";
 
-type TextVariant = 'subtext' | 'small' | 'body' | 'title' | 'heading' | 'display';
+import type { TextVariant } from "@/types/componentTypes";
 
 interface AppTextProps extends TextProps {
     variant?: TextVariant,

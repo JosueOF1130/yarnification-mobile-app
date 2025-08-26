@@ -6,10 +6,10 @@ import { useTheme } from "@/context/themeContext";
 import { FontAwesome } from "@expo/vector-icons";
 
 
-type AppSelectListProps = {
+interface AppSelectListProps extends Partial<SelectListProps> {
     data: { key: number; value: string }[];
     setSelected: (val: string) => void;
-} & Partial<SelectListProps>;
+};
 
 export default function AppSelectList({ data, setSelected, ...rest }: AppSelectListProps) {
 

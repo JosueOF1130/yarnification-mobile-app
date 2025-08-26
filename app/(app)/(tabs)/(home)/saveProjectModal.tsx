@@ -1,13 +1,12 @@
 import AppText from "@/components/AppText";
-import React, { useState } from "react";
-import { Modal, View, Text, Pressable, StyleSheet, TextInput } from "react-native";
+import ToastMessage from "@/components/ToastMessage";
 import { useTheme } from "@/context/themeContext";
-import ThemedView from "@/components/ThemedView";
-import yarnTypeData from "@/data/yarnTypeData";
 import projectTypeData from "@/data/projectTypeData";
+import yarnTypeData from "@/data/yarnTypeData";
 import { saveProject } from "@/firebase/firebaseDatabase";
 import { User } from "firebase/auth";
-import ToastMessage from "./toastMessage";
+import React, { useEffect, useState } from "react";
+import { Modal, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
 
 interface ModalProps {
@@ -18,11 +17,11 @@ interface ModalProps {
     projectIndex: number;
     yardsPerBall: number;
     user: User | null;
-    displayToast: (message: string ) => void;
+    displayToast: (message: string) => void;
 }
 
-export default function SaveProjectModal({ visible, hideModal, minMax, yarnTypeIndex, projectIndex, yardsPerBall, user, displayToast}: ModalProps) {
-    
+export default function SaveProjectModal({ visible, hideModal, minMax, yarnTypeIndex, projectIndex, yardsPerBall, user, displayToast }: ModalProps) {
+
     const { colors } = useTheme();
 
     const styles = StyleSheet.create({
@@ -63,10 +62,8 @@ export default function SaveProjectModal({ visible, hideModal, minMax, yarnTypeI
 
     });
 
-    const [saveResult, setSaveResult] = useState<"success" | null>(null);
 
     const [errorToastVisible, setErrorToastVisible] = useState<boolean>(false);
-    // const [errorToastMessage, setErrorToastMessage] = useState<string>("");
 
     const [yarnBrand, setYarnBrand] = useState<string>("");
     const [yarnMaterial, setYarnMaterial] = useState<string>("");
@@ -82,7 +79,7 @@ export default function SaveProjectModal({ visible, hideModal, minMax, yarnTypeI
     const projectType = projectTypeData.find(item => item.key === projectIndex);
     const projectTypeValue = projectType ? projectType.value : null;
 
-    
+
     function resetModal() {
         setYarnBrand("");
         setYarnMaterial("");
@@ -90,6 +87,7 @@ export default function SaveProjectModal({ visible, hideModal, minMax, yarnTypeI
         setHookSize(0);
         setTimeSpent(0);
         setProjectName("");
+        setErrorToastVisible(false);
     }
 
     function closeModal() {
@@ -98,8 +96,8 @@ export default function SaveProjectModal({ visible, hideModal, minMax, yarnTypeI
     }
 
     async function onSave() {
-        
-        if(!user) return;
+
+        if (!user) return;
 
         const newProject = {
             projectName,
@@ -113,27 +111,32 @@ export default function SaveProjectModal({ visible, hideModal, minMax, yarnTypeI
             yarnUsed,
             hookSize,
             timeSpent,
-            createdAt: Date.now()
+            createdAt: Date.now(),
+            public: false
         }
 
-        
+
         const result = await saveProject(user.uid, newProject);
 
-        if(result.success) {
-            setSaveResult("success");
+        if (result.success) {
             closeModal();
             displayToast("Project Saved");
-            
-        }else {
+        } else {
             console.log(result.errorMessage);
             setErrorToastVisible(true);
-            //TODO remove console log
+            //TODO: remove console log
         }
 
     }
 
+    useEffect(() => {
+        if (!visible) {
+            resetModal();
+        }
+    }, [visible]);
 
-    
+
+
 
 
     return (
@@ -151,7 +154,7 @@ export default function SaveProjectModal({ visible, hideModal, minMax, yarnTypeI
                         </AppText>
 
                         <View style={styles.form}>
-                            <AppText variant="body" style={{marginTop: 20, marginBottom: 10}}>Project name</AppText>
+                            <AppText variant="body" style={{ marginTop: 20, marginBottom: 10 }}>Project name</AppText>
                             <TextInput
                                 style={[styles.input, styles.border]}
                                 placeholder="Donnie's Hat"
@@ -161,24 +164,24 @@ export default function SaveProjectModal({ visible, hideModal, minMax, yarnTypeI
                             />
                         </View>
                         <View>
-                            <AppText variant="title" style={{marginVertical: 20}}>Project info:</AppText>
-                            <AppText style={{marginBottom: 10}}>Project: {projectTypeValue !== null ? projectTypeValue : "N/A"}</AppText>
-                            <AppText style={{marginBottom: 10}}>Yarn type: {yarnTypeValue !== null ? yarnTypeValue : "N/A"}</AppText>
-                            <AppText style={{marginBottom: 10}}>Yards per ball: {yardsPerBall} yards</AppText>
-                            <AppText style={{marginBottom: 10}}>Minimum: {minMax.min} balls of yarn</AppText>
-                            <AppText style={{marginBottom: 10}}>Maximum: {minMax.max} balls of yarn</AppText>
+                            <AppText variant="title" style={{ marginVertical: 20 }}>Project info:</AppText>
+                            <AppText style={{ marginBottom: 10 }}>Project: {projectTypeValue !== null ? projectTypeValue : "N/A"}</AppText>
+                            <AppText style={{ marginBottom: 10 }}>Yarn type: {yarnTypeValue !== null ? yarnTypeValue : "N/A"}</AppText>
+                            <AppText style={{ marginBottom: 10 }}>Yards per ball: {yardsPerBall} yards</AppText>
+                            <AppText style={{ marginBottom: 10 }}>Minimum: {minMax.min} balls of yarn</AppText>
+                            <AppText style={{ marginBottom: 10 }}>Maximum: {minMax.max} balls of yarn</AppText>
                         </View>
                     </View>
                     <Pressable style={[styles.button, { backgroundColor: colors.primary.shades[500] }]} onPress={onSave}>
-                        <Text style={{ color: colors.text.base, fontWeight: "bold", alignSelf: "center"}}>Save</Text>
+                        <Text style={{ color: colors.text.base, fontWeight: "bold", alignSelf: "center" }}>Save</Text>
                     </Pressable>
                     <Pressable style={[styles.button, { backgroundColor: colors.primary.shades[500] }]} onPress={closeModal}>
-                        <Text style={{ color: colors.text.base, fontWeight: "bold", alignSelf: "center"}}>Close</Text>
+                        <Text style={{ color: colors.text.base, fontWeight: "bold", alignSelf: "center" }}>Close</Text>
                     </Pressable>
                 </View>
             </View>
             {
-                <ToastMessage visible={errorToastVisible} hideToast={() => setErrorToastVisible(false)} type="error" message={"Could not save your project. Please try again."}/>
+                <ToastMessage visible={errorToastVisible} hideToast={() => setErrorToastVisible(false)} type="error" message={"Could not save your project. Please try again."} />
             }
         </Modal>
     );

@@ -6,13 +6,18 @@ import { Ionicons } from "@expo/vector-icons";
 import { router, Stack } from "expo-router";
 import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 
-
-
 export default function SettingsScreen() {
 
     const { logOutUser } = useAuth();
 
-const { colors, theme, toggleTheme } = useTheme();
+    const { colors, theme, toggleTheme } = useTheme();
+
+    const colorStyles = StyleSheet.create({
+        option: {
+            borderColor: colors.text.base
+        }     
+    })
+
     function goBack() {
         router.back();
     }
@@ -24,26 +29,43 @@ const { colors, theme, toggleTheme } = useTheme();
         <>
             <Stack.Screen options={{ headerShown: false }} />
             <ThemedView>
-                <View style={{ marginVertical: 14 }} >
+                <View style={{ marginBottom: 15 }} >
                     <Pressable style={{ flexDirection: "row", alignItems: "center" }} onPress={goBack}>
                         <Ionicons name="arrow-back" size={24} color={colors.text.base} />
-                        <AppText style={{ marginLeft: 5 }} variant="title">Profile</AppText>
+                        <AppText style={{ marginLeft: 5 }} variant="body">Profile</AppText>
                     </Pressable>
                 </View>
 
                 <AppText variant="display">Settings</AppText>
 
 
-                <ScrollView>
-                    <Pressable style={styles.option} onPress={logOutUser}>
-                        <AppText variant="title">Sign out</AppText>
+                <ScrollView style={{ paddingTop: 20 }}>
+
+
+                    <Pressable style={[styles.option, colorStyles.option, { justifyContent: "space-between"}]}>
+                        <View style={styles.content}>
+                            <Ionicons name="person" size={24} color={colors.text.base} style={styles.icon} />
+                            <AppText style={styles.text}>Edit profile</AppText>
+                        </View>
+                        <Ionicons name="arrow-forward" size={24} color={colors.text.base} style={styles.icon} />
+
                     </Pressable>
-                    <Pressable onPress={toggleTheme}>
-                        <Ionicons name="contrast" size={24} color={colors.text.base} />
-                        <AppText variant="title">
+
+                    <Pressable onPress={toggleTheme} style={[styles.option, colorStyles.option]}>
+                        <Ionicons name="contrast" size={24} color={colors.text.base} style={styles.icon} />
+                        <AppText style={styles.text}>
                             {theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
                         </AppText>
                     </Pressable>
+
+
+                    <Pressable style={[styles.option, colorStyles.option]} onPress={logOutUser}>
+                        <Ionicons name="exit" size={24} color={colors.text.base} style={styles.icon} />
+                        <AppText style={styles.text}>Sign out</AppText>
+                    </Pressable>
+
+
+
                 </ScrollView>
             </ThemedView>
         </>
@@ -54,9 +76,22 @@ const { colors, theme, toggleTheme } = useTheme();
 
 const styles = StyleSheet.create({
     option: {
-        marginVertical: 20,
-        flexDirection: "column",
-        width: "100%"
-    }
+        flexDirection: "row",
+        width: "100%",
+        borderWidth: 2,
+        borderRadius: 7,
+        padding: 15,
+        marginBottom: 10
+    },
+    icon: {
+        marginRight: 10
+    },
+    text: {
+        alignSelf: "center"
+    },
+    content: {
+        flexDirection: "row",
+
+    },
 
 });

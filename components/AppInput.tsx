@@ -1,5 +1,5 @@
-import { StyleSheet, TextInput, TextInputProps, StyleProp, TextStyle } from "react-native";
 import { useTheme } from "@/context/themeContext";
+import { StyleProp, StyleSheet, TextInput, TextInputProps, TextStyle } from "react-native";
 
 type InputVariant = 'default' | 'number-pad' | 'decimal-pad'
     | 'numeric'
@@ -7,7 +7,7 @@ type InputVariant = 'default' | 'number-pad' | 'decimal-pad'
     | 'phone-pad'
     | 'url';
 
-type AppInputProps = TextInputProps & {
+interface AppInputProps extends TextInputProps {
     variant?: InputVariant;
     style?: StyleProp<TextStyle>;
 };

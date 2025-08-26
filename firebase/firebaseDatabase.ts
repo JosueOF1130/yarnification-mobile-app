@@ -1,7 +1,7 @@
 
 import { database } from "./firebase";
 
-import { get, onValue, push, ref, set } from "firebase/database";
+import { get, onValue, push, ref, set, update } from "firebase/database";
 
 import type { ProjectDataType, ProjectsDataType } from "@/types/projectType";
 
@@ -23,26 +23,6 @@ export async function saveProject(uid: string, projectData: ProjectDataType): Pr
         });
     }
 }
-
-type GetUserProjectsResultType = ProjectDataType[] | DBError | [];
-
-async function getUserProjects(uid: string): Promise<GetUserProjectsResultType> {
-    try {
-        const projectsRef = ref(database, `users/${uid}/projects`);
-        const snapshot = await get(projectsRef);
-        if (!snapshot.exists()) return [];
-        const data = snapshot.val();
-
-
-        return Object.keys(data).map(key => ({ id: key, ...data[key] }));
-    } catch (error: any) {
-        return {
-            success: false,
-            errorMessage: error?.message ?? "Failed to fetch projects"
-        };
-    }
-}
-
 
 export function listenToUserProjects(uid: string, callback: (result: ProjectsDataType[]) => void): () => void {
 
@@ -73,17 +53,45 @@ type GetProjectResultType = ProjectDataType | DBError | [];
 
 export async function getProject(uid: string, projectId: string): Promise<GetProjectResultType> {
     try {
-        const snapshot = await get(ref(database, `users/${uid}/projects/${projectId}`));
+
+        const projectRef = ref(database, `users/${uid}/projects/${projectId}`);
+
+        const snapshot = await get(projectRef);
 
         if (snapshot.exists()) {
+
             return snapshot.val();
+
         } else {
+
             return []
+
         }
+
     } catch (error: any) {
+
         return {
+
             success: false, 
             errorMessage: error?.message ?? "Failed to fetch project data"
+        
+        }
+
+    }
+}
+
+
+
+
+export async function updateProject(uid: string, projectId: string, data: ProjectDataType): Promise<DBResult> {
+    try {
+        const projectRef = ref(database, `users/${uid}/projects/${projectId}`);
+        await update(projectRef, data);
+        return { success: true }
+    } catch (error: any) {
+        return {
+            success: false,
+            errorMessage: error?.message ?? "Failed to update project. Try again"
         }
     }
 }

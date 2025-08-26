@@ -1,10 +1,10 @@
-import { StyleSheet, Text, TextProps, StyleProp, TextStyle } from "react-native";
+import { StyleProp, StyleSheet, Text, TextProps, TextStyle } from "react-native";
 
 import { useTheme } from "@/context/themeContext";
 
 type TextVariant = 'subtext' | 'small' | 'body' | 'title' | 'heading' | 'display';
 
-type AppTextProps = TextProps & {
+interface AppTextProps extends TextProps {
     variant?: TextVariant,
     style?: StyleProp<TextStyle>
 }

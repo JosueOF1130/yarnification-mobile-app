@@ -23,6 +23,7 @@ export default function DetailsScreen() {
     const [project, setProject] = useState<ProjectDataType>()
 
 
+    const [toastVisible, setToastVisible] = useState<boolean>(false);
 
 
     useEffect(() => {
@@ -191,6 +192,14 @@ export default function DetailsScreen() {
                     <Pressable onPress={goBack} style={styles.button}>
                         <AppText style={styles.buttonTxt}>Cancel</AppText>
                     </Pressable>
+
+                    {/* {
+                        toastVisible && (
+                            <ToastMessage visible={toastVisible} hideToast={() => setToastVisible(false)} type="success" message={errorMessage} />
+
+                        )
+                    } */}
+
 
                 </ScrollView>
             </ThemedView>

@@ -1,9 +1,11 @@
 
 
+
+
 import AppText from "@/components/AppText";
-import React, { useEffect, useRef } from "react";
-import { View, StyleSheet, Animated, Easing } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import React, { useEffect, useRef } from "react";
+import { Animated, Easing, StyleSheet, View } from "react-native";
 
 interface ToastProps {
     visible: boolean;

@@ -1,24 +1,24 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-import { View, TextInput, StyleSheet, Pressable, Text, ScrollView } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 
 
 import { useTheme } from "@/context/themeContext";
 
-import ThemedView from "@/components/ThemedView";
-import AppText from "@/components/AppText";
 import AppSelectList from "@/components/AppSelectList";
+import AppText from "@/components/AppText";
+import ThemedView from "@/components/ThemedView";
 
 import yarnRequirements from "@/assets/yarnRequirements";
 
-import yarnTypeData from "@/data/yarnTypeData"
 import projectTypeData from "@/data/projectTypeData";
+import yarnTypeData from "@/data/yarnTypeData";
 
-import projectIcons from "@/assets/projectIcons"
-import yarnIcons from "@/assets/yarnIcons"
 import SaveProjectModal from "@/app/(app)/(tabs)/(home)/saveProjectModal";
+import projectIcons from "@/assets/projectIcons";
+import yarnIcons from "@/assets/yarnIcons";
+import ToastMessage from "@/components/ToastMessage";
 import { useAuth } from "@/context/authContext";
-import ToastMessage from "./toastMessage";
 
 
 

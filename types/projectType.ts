@@ -11,7 +11,8 @@ export type ProjectsDataType = {
     yarnMaterial: string,
     yarnUsed: number,
     hookSize: number,
-    timeSpent: number
+    timeSpent: number,
+    public: boolean,
 }
 
 export type ProjectDataType = {
@@ -27,7 +28,7 @@ export type ProjectDataType = {
     yarnUsed: number,
     hookSize: number,
     timeSpent: number,
-    public?: boolean
+    public: boolean,
 }
 
 

@@ -5,7 +5,7 @@ import { auth } from "./firebase";
 import { database } from "@/firebase/firebase";
 import { get, ref, set } from "firebase/database";
 
-type AuthSuccess= User;
+type AuthSuccess = User;
 export type AuthError = { errorCode: string; errorMessage: string };
 export type AuthResult = AuthSuccess | AuthError;
 
@@ -74,10 +74,19 @@ async function getUsername(uid: string): Promise<string | null | AuthError> {
 }
 
 
+async function getCurrentUser(): Promise<AuthSuccess | null> {
+    const user = auth.currentUser;
+
+    if(user) {
+        return user;
+    } else {
+        return null
+    }
+}
 
 
 export {
     getUsername, onUserStateChange, signInUser,
-    signOutUser, signUpUser
+    signOutUser, signUpUser, getCurrentUser
 };
 

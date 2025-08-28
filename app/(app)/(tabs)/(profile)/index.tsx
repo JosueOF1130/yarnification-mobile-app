@@ -1,4 +1,5 @@
 import AppText from "@/components/AppText";
+import ProjectCard from "@/components/ProjectCard";
 import ThemedView from "@/components/ThemedView";
 import { useAuth } from "@/context/authContext";
 import { useTheme } from "@/context/themeContext";
@@ -96,16 +97,7 @@ export default function ProfileScreen() {
                 <ScrollView style={{ borderColor: "transparent", borderTopColor: colors.primary.base, borderWidth: 2, }}>
                     {
                         projects.map(project => (
-                            <Pressable onPress={() => { openProjectDetails(project.id) }}  key={project.id}>
-                                <View style={styles.projectCard}>
-                                    <AppText style={styles.projectTitle}>{project.projectName}</AppText>
-                                    <AppText>Project type: {project.projectType}</AppText>
-                                    <AppText>Yarn type: {project.yarnType}</AppText>
-                                    <AppText>Yards per ball: {project.yardsPerBall}</AppText>
-                                    <AppText>Min: {project.min} balls</AppText>
-                                    <AppText>Max: {project.max} balls</AppText>
-                                </View>
-                            </Pressable>
+                            <ProjectCard project={project} press={() => openProjectDetails(project.id)} />
                         ))
                     }
                 </ScrollView>

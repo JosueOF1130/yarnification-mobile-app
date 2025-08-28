@@ -23,6 +23,10 @@ export default function SettingsScreen() {
     }
 
 
+    function pushEditProfile() {
+        router.push("./editProfile")
+    }
+
 
 
     return (
@@ -42,7 +46,7 @@ export default function SettingsScreen() {
                 <ScrollView style={{ paddingTop: 20 }}>
 
 
-                    <Pressable style={[styles.option, colorStyles.option, { justifyContent: "space-between"}]}>
+                    <Pressable style={[styles.option, colorStyles.option, { justifyContent: "space-between"}]}  onPress={pushEditProfile} >
                         <View style={styles.content}>
                             <Ionicons name="person" size={24} color={colors.text.base} style={styles.icon} />
                             <AppText style={styles.text}>Edit profile</AppText>

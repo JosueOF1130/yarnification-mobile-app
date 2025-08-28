@@ -1,7 +1,9 @@
 import { useTheme } from "@/context/themeContext";
 import { StyleProp, StyleSheet, TextInput, TextInputProps, TextStyle } from "react-native";
 
-type InputVariant = 'default' | 'number-pad' | 'decimal-pad'
+type InputVariant = 'default'
+    | 'number-pad'
+    | 'decimal-pad'
     | 'numeric'
     | 'email-address'
     | 'phone-pad'
@@ -10,9 +12,10 @@ type InputVariant = 'default' | 'number-pad' | 'decimal-pad'
 interface AppInputProps extends TextInputProps {
     variant?: InputVariant;
     style?: StyleProp<TextStyle>;
+    onChangeText?: (text: string) => void;
 };
 
-export default function AppInput({ variant = "default", style, ...props }: AppInputProps) {
+export default function AppInput({ variant = "default", style, onChangeText, ...props }: AppInputProps) {
     const { colors } = useTheme();
 
     const styles = StyleSheet.create({
@@ -26,8 +29,12 @@ export default function AppInput({ variant = "default", style, ...props }: AppIn
     });
     return (
         <TextInput
+            placeholderTextColor={colors.text.shades[900]}
             style={[styles.default, style]}
             keyboardType={variant}
+            returnKeyType="done"
+            enablesReturnKeyAutomatically={true}
+            onChangeText={onChangeText}
             {...props}
         />
     );

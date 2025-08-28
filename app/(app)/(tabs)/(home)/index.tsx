@@ -20,8 +20,9 @@ import yarnIcons from "@/assets/yarnIcons";
 import ToastMessage from "@/components/ToastMessage";
 import { useAuth } from "@/context/authContext";
 import AppButton from "@/components/AppButton";
+import AppInput from "@/components/AppInput";
 
-
+import YarnBall from "@/assets/svgs/yarnball.svg"
 
 export default function HomePage() {
 
@@ -50,15 +51,16 @@ export default function HomePage() {
     const [toastSuccessMessage, setToastSuccessMessage] = useState<string>("");
 
     const [showErrorToast, setShowErrorToast] = useState<boolean>(false);
+    const [toastErrorMessage, setToastErrorMessage] = useState<string>("");
 
 
     function calculateYarnAmount() {
 
 
-        if(yardsPerBall === 0) {
+        if (yardsPerBall === 0) {
             //show calculated error toast
-            // setToastMessage("Enter the number of yards per ball.");
-            setShowSuccessToast(true);
+            setToastErrorMessage("Enter the number of yards per ball.");
+            setShowErrorToast(true);
             return;
         }
 
@@ -118,9 +120,9 @@ export default function HomePage() {
     const Response = () => {
         return (
             <View style={styles.responseContainer}>
-                <View style={styles.responseBody}>
-                        <AppText variant="body" bold>Balls of yarn needed:</AppText>
-                        <AppText style={styles.minMaxLabel} bold>{minMax.min}{" - "}{minMax.max}</AppText>
+                <View style={[styles.responseBody, cs.border]}>
+                    <AppText variant="body" bold>Balls of yarn needed:</AppText>
+                    <AppText style={styles.minMaxLabel} bold>{minMax.min}{" - "}{minMax.max}</AppText>
                 </View>
                 <AppButton onPress={saveProject} buttonStyle={styles.button}>Save project?</AppButton>
             </View>
@@ -147,6 +149,12 @@ export default function HomePage() {
     const cs = StyleSheet.create({
         scrollView: {
             backgroundColor: colors.background.base
+        },
+        border: {
+            borderColor: colors.text.base,
+            borderRadius: 8,
+            borderWidth: 1,
+            padding: 15
         }
     })
 
@@ -154,19 +162,27 @@ export default function HomePage() {
         <>
 
 
-            <ScrollView style={cs.scrollView}>
+            <ScrollView style={[cs.scrollView, styles.scroll]}>
                 <ThemedView>
-                    <AppText variant="display">Home</AppText>
+                    <View style={{flexDirection: "row", alignItems: "flex-end"}}>
+                        <YarnBall width={35} height={35} fill={colors.text.shades[600]} />
+                        <AppText variant="display" style={{marginLeft: 10}}>Project Calculator</AppText>
+                    </View>
 
                     <View style={styles.container}>
                         <AppText style={{ marginTop: 20 }}>Select yarn type:</AppText>
                         <AppSelectList data={yarnTypeData} setSelected={changeYarnTypeIcon} />
                         <AppText style={{ marginTop: 20 }}>Select your project:</AppText>
                         <AppSelectList data={projectTypeData} setSelected={changeProjectIcon} />
-                        <AppText>Minimum: {yarnRequirements[selectedYarn][selectedProject].min} yards</AppText>
-                        <AppText>Maximum: {yarnRequirements[selectedYarn][selectedProject].max} yards</AppText>
+
+
+                        <View style={[styles.yarnRequirements, cs.border]}>
+                            <AppText center variant="title" style={{ marginBottom: 5 }}>Yarn requirements</AppText>
+                            <AppText center bold>{yarnRequirements[selectedYarn][selectedProject].min} - {yarnRequirements[selectedYarn][selectedProject].max} yards</AppText>
+                        </View>
+
                         <AppText style={{ marginTop: 20 }}>Yards per ball:</AppText>
-                        <TextInput
+                        {/* <TextInput
                             style={[styles.input, styles.border]}
                             onChangeText={yardsPerBallOnTextChange}
                             placeholder="Enter a number"
@@ -174,7 +190,8 @@ export default function HomePage() {
                             keyboardType="numeric"
                             returnKeyType="done"
                             keyboardAppearance={theme}
-                        />
+                        /> */}
+                        <AppInput style={[styles.input, styles.border]} placeholder="200" variant="numeric" onChangeText={yardsPerBallOnTextChange} />
                         <AppButton onPress={calculateYarnAmount} buttonStyle={styles.button}>Calculate</AppButton>
                         {
                             calculated &&
@@ -196,16 +213,22 @@ export default function HomePage() {
                 </ThemedView>
             </ScrollView>
 
-
+            {/* success toast  */}
             {
                 <ToastMessage visible={showSuccessToast} hideToast={() => setShowSuccessToast(false)} type="success" message={toastSuccessMessage} />
             }
             {/* on calculate toast error */}
+            {
+                <ToastMessage visible={showErrorToast} hideToast={() => setShowErrorToast(false)} type="error" message={toastErrorMessage} />
+            }
         </>
     );
 }
 
 const styles = StyleSheet.create({
+    scroll: {
+        paddingBottom: 25
+    },
     background: {
         height: "120%"
     },
@@ -214,6 +237,7 @@ const styles = StyleSheet.create({
     },
     container: {
         width: "100%",
+        marginBottom: 25,
         textAlign: "left"
     },
     input: {
@@ -241,13 +265,16 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100
     },
+    yarnRequirements: {
+        justifyContent: "center",
+        textAlign: "center"
+    },
     responseContainer: {
+
     },
     responseBody: {
-        borderWidth: 1,
-        borderRadius: 6,
-        padding: 15,
-        marginVertical: 20,
+        marginBottom: 15,
+        marginTop: 25,
         alignItems: "center"
     },
     col: {

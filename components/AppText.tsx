@@ -7,11 +7,12 @@ import type { TextVariant } from "@/types/componentTypes";
 interface AppTextProps extends TextProps {
     variant?: TextVariant,
     style?: StyleProp<TextStyle>,
-    bold?: boolean
+    bold?: boolean,
+    center?: boolean
 }
 
 
-export default function AppText({ variant = 'body', style, bold, ...props }: AppTextProps) {
+export default function AppText({ variant = 'body', style, bold, center, ...props }: AppTextProps) {
     const { colors } = useTheme();
 
     const styles = StyleSheet.create({
@@ -42,13 +43,16 @@ export default function AppText({ variant = 'body', style, bold, ...props }: App
         bold: {
             fontWeight: "bold"
         },
+        center: {
+            textAlign: "center"
+        },
         default: {
             color: colors.text.base,
         }
     })
 
     return (
-        <Text style={[styles.default, styles[variant],style, bold && styles.bold]} {...props} />
+        <Text style={[styles.default, styles[variant],style, bold && styles.bold, center && styles.center]} {...props} />
     );
 }
 

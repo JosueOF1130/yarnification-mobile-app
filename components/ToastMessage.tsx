@@ -62,7 +62,7 @@ export default function ToastMessage({ visible, hideToast, type, message }: Toas
                 {
                     transform: [{ translateY: slideAnim }],
                     opacity: opacityAnim,
-                    backgroundColor: type === "success" ? "#2caa61ff" : "#cb2c2cff",
+                    backgroundColor: type === "success" ? "#8fe585" : "#ee7272",
                 },
             ]}
         >

@@ -23,6 +23,7 @@ export default function AppInput({ variant = "default", style, onChangeText, ...
             fontSize: 16,
             padding: 10,
             borderWidth: 1,
+            borderRadius: 5,
             borderColor: colors.text.base,
             color: colors.text.base,
         }

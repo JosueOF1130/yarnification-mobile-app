@@ -52,7 +52,7 @@ export default function AppText({ variant = 'body', style, bold, center, ...prop
     })
 
     return (
-        <Text style={[styles.default, styles[variant],style, bold && styles.bold, center && styles.center]} {...props} />
+        <Text style={[styles.default, styles[variant], style, bold && styles.bold, center && styles.center]} {...props} />
     );
 }
 

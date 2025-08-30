@@ -17,13 +17,15 @@ interface ModalProps {
     projectIndex: number;
     yardsPerBall: number;
     user: User | null;
+    projectMin: number,
+    projectMax: number
     displayToast: (message: string) => void;
 }
 
 import type { ProjectDataType } from "@/types/projectType";
 
 
-export default function SaveProjectModal({ visible, hideModal, minMax, yarnTypeIndex, projectIndex, yardsPerBall, user, displayToast }: ModalProps) {
+export default function SaveProjectModal({ visible, hideModal, minMax, yarnTypeIndex, projectIndex, yardsPerBall, user, displayToast, projectMin, projectMax }: ModalProps) {
 
     const { colors } = useTheme();
 
@@ -104,19 +106,30 @@ export default function SaveProjectModal({ visible, hideModal, minMax, yarnTypeI
 
         if (!user) return;
 
-        const newProject = {
+        const newProject: ProjectDataType = {
             projectName,
-            yarnType: yarnTypeValue,
-            projectType: projectTypeValue,
+
+            yarnType: yarnTypeValue ?? "",
+            projectType: projectTypeValue ?? "",
+
+            projectMin,
+            projectMax,
+
             yardsPerBall,
             min: minMax.min,
             max: minMax.max,
+
             yarnBrand,
             yarnMaterial,
             yarnUsed,
             hookSize,
             timeSpent,
+
             createdAt: Date.now(),
+
+            personalNotes: "",
+            publicCaption: "",
+
             public: false
         }
 

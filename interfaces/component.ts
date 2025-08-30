@@ -1,4 +1,5 @@
 import { TextVariant } from "@/types/componentTypes";
+import { ProjectsDataType } from "@/types/projectType";
 import { Ionicons } from "@expo/vector-icons";
 import { ReactNode } from "react";
 import { StyleProp, TextStyle, ViewStyle } from "react-native";
@@ -17,4 +18,9 @@ export interface AppIconButtonProps extends AppButtonProps {
     size?: number,
     color?: string,
     position?: "left" | "right"
+}
+
+export interface ProjectCardProps {
+    project: ProjectsDataType;
+    press: () => void
 }

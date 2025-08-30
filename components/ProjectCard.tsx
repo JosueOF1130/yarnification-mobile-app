@@ -1,13 +1,9 @@
 import { useTheme } from "@/context/themeContext";
-import { ProjectDataType, ProjectsDataType } from "@/types/projectType"
 import { Pressable, StyleSheet, View } from "react-native";
 import AppText from "./AppText";
 import { Ionicons } from "@expo/vector-icons";
+import { ProjectCardProps } from "@/interfaces/component";
 
-interface ProjectCardProps {
-    project: ProjectsDataType;
-    press: () => void
-}
 
 
 export default function ProjectCard({ project, press }: ProjectCardProps) {
@@ -18,24 +14,29 @@ export default function ProjectCard({ project, press }: ProjectCardProps) {
         viewContainer: {
             borderColor: colors.secondary.base,
 
+        },
+        projectTag: {
+            color: colors.background.base,
+            backgroundColor: colors.text.shades[700]
+        },
+        yarnTag: {
+            color: colors.background.base,
+            backgroundColor: colors.text.shades[900]
         }
     })
 
     return (
         <>
             <Pressable onPress={press} key={project.id} style={[styles.viewContainer, colorStyles.viewContainer]}>
-                <View style={styles.projectCard}>
-                    <AppText style={styles.projectTitle}>{project.projectName}</AppText>
+                <View>
+                    <AppText variant="title">{project.projectName}</AppText>
                     <View style={{flexDirection: "row", gap: 10, marginTop: 5}}>
-                        <AppText>{project.projectType}</AppText>
-                        <AppText>{project.yarnType}</AppText>
-                    </View>
-                    {/* <AppText>Yards per ball: {project.yardsPerBall}</AppText> */}
-                    {/* <AppText>Min: {project.min} balls</AppText> */}
-                    {/* <AppText>Max: {project.max} balls</AppText> */}
+                        <AppText style={[styles.tag, colorStyles.projectTag]} variant="small" bold>{project.projectType}</AppText>
+                        <AppText style={[styles.tag, colorStyles.yarnTag]} bold variant="small">{project.yarnType}</AppText>
+                    </View> 
                 </View>
                 <View style={{justifyContent: "center"}}>
-                    <Ionicons name="arrow-forward" size={24} color={colors.text.base} style={styles.icon} />
+                    <Ionicons name="arrow-forward" size={25} color={colors.text.base} style={styles.icon} />
                 </View>
             </Pressable>
         </>
@@ -45,17 +46,16 @@ export default function ProjectCard({ project, press }: ProjectCardProps) {
 const styles = StyleSheet.create({
     viewContainer: {
         borderWidth: 1,
-        padding: 15,
+        padding: 10,
         borderRadius: 10,
         marginVertical: 10,
         flexDirection: "row",
         justifyContent: "space-between"
     },
-    projectCard: {
-
-    },
-    projectTitle: {
-
+    tag: {
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        borderRadius: 3
     },
     icon: {
         marginRight: 10

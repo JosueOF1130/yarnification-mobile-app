@@ -9,7 +9,7 @@ import AppSelectList from "@/components/AppSelectList";
 import AppText from "@/components/AppText";
 import ThemedView from "@/components/ThemedView";
 
-import yarnRequirements from "@/assets/yarnRequirements";
+import {yarnRequirementsByIndex} from "@/assets/yarnRequirements";
 
 import projectTypeData from "@/data/projectTypeData";
 import yarnTypeData from "@/data/yarnTypeData";
@@ -66,7 +66,7 @@ export default function HomePage() {
 
         // out of range error
 
-        let requirements = yarnRequirements[selectedYarn][selectedProject];
+        let requirements = yarnRequirementsByIndex[selectedYarn][selectedProject];
 
         if (!requirements) return;
 
@@ -178,7 +178,7 @@ export default function HomePage() {
 
                         <View style={[styles.yarnRequirements, cs.border]}>
                             <AppText center variant="title" style={{ marginBottom: 5 }}>Yarn requirements</AppText>
-                            <AppText center bold>{yarnRequirements[selectedYarn][selectedProject].min} - {yarnRequirements[selectedYarn][selectedProject].max} yards</AppText>
+                            <AppText center bold>{yarnRequirementsByIndex[selectedYarn][selectedProject].min} - {yarnRequirementsByIndex[selectedYarn][selectedProject].max} yards</AppText>
                         </View>
 
                         <AppText style={{ marginTop: 20 }}>Yards per ball:</AppText>
@@ -205,6 +205,8 @@ export default function HomePage() {
                                 yarnTypeIndex={selectedYarn}
                                 projectIndex={selectedProject}
                                 yardsPerBall={yardsPerBall}
+                                projectMin={yarnRequirementsByIndex[selectedYarn][selectedProject].min}
+                                projectMax={yarnRequirementsByIndex[selectedYarn][selectedProject].max}
                                 user={user}
                                 displayToast={displaySuccessToast}
                             />

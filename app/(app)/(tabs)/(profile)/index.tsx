@@ -9,6 +9,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, View } from "react-native";
+
+import NoProjectsIcon from "@/assets/svgs/no-projects.svg";
+
+
 export default function ProfileScreen() {
 
     const router = useRouter();
@@ -16,7 +20,7 @@ export default function ProfileScreen() {
     const { user } = useAuth();
 
     const { colors } = useTheme();
-    
+
 
     const [projects, setProjects] = useState<ProjectsDataType[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -75,6 +79,17 @@ export default function ProfileScreen() {
         },
     })
 
+
+    const noProjectsFound = () => {
+        return (
+            <View style={{ alignItems: "center", gap: 10}}>
+                <NoProjectsIcon stroke={colors.primary.base} width={60} height={60} />
+                <AppText variant="heading">No projects found</AppText>
+                <AppText>Start by adding a project from the Home page.</AppText>
+            </View>
+        );
+    }
+
     return (
         <View style={{ flex: 1 }}>
             <ThemedView>
@@ -86,18 +101,16 @@ export default function ProfileScreen() {
                     </Pressable>
                 </View>
 
-                
 
                 <AppText variant="heading" style={{ marginTop: 20, marginBottom: 10 }}>My Projects</AppText>
 
 
-                
                 {loading && <AppText>Loading projects...</AppText>}
-                {!loading && projects.length === 0 && <AppText>No projects found.</AppText>}
-                <ScrollView style={{ borderColor: "transparent", borderTopColor: colors.primary.base, borderWidth: 2, }}>
+                <ScrollView style={{ flex: 1, borderColor: "transparent", borderTopColor: colors.primary.base, borderWidth: 2, padding: 0 }}>
+                    {!loading && projects.length === 0 && noProjectsFound()}
                     {
                         projects.map(project => (
-                            <ProjectCard project={project} press={() => openProjectDetails(project.id)} />
+                            <ProjectCard project={project} press={() => openProjectDetails(project.id)} key={project.id} />
                         ))
                     }
                 </ScrollView>

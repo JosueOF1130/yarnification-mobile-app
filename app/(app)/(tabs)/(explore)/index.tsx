@@ -13,24 +13,7 @@ import { useTheme } from "@/context/themeContext";
 export default function ExplorePage() {
     const { colors } = useTheme();
 
-    const { user } = useAuth();
-
-    const [username, setUsername] = useState<string>("");
-
-    useEffect(() => {
-        async function fetchUsername() {
-            if (!user) return;
-
-            const username = await getUsername(user.uid);
-
-            if (isAuthError(username)) {
-                alert(username.errorMessage);
-            } else {
-                setUsername(username === null ? "" : username);
-            }
-        }
-        fetchUsername();
-    }, [user]);
+    
 
     const styles = StyleSheet.create({
         header: {
@@ -50,7 +33,7 @@ export default function ExplorePage() {
                 <View style={styles.header}>
                     <AppText variant="display">Explore</AppText>
 
-                    <AppText>{username}</AppText>
+                    {/* <AppText>{username}</AppText> */}
                 </View>
                 <View style={styles.body}>
                     <AppText variant="display">Coming soon...</AppText>

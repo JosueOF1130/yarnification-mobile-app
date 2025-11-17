@@ -34,13 +34,13 @@ export default function AuthView() {
 
     function login() {
         // TODO: uncomment this before uploading to github
-        // loginUser(email, password);
-        loginUser("email@email.com", "password");
+        loginUser(email, password);
+        // loginUser("email@email.com", "password");
     }
 
     function createAccount() {
-        // createUser(email, password, username);
-        createUser("email@email.com", "password", "fattboii");
+        createUser(email, password, username);
+        // createUser("email@email.com", "password", "fattboii");
     }
 
 

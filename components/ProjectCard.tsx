@@ -10,6 +10,8 @@ export default function ProjectCard({ project, press }: ProjectCardProps) {
 
     const { colors } = useTheme();
 
+    console.log(project);
+
     const colorStyles = StyleSheet.create({
         viewContainer: {
             borderColor: colors.secondary.base,
